@@ -66,7 +66,13 @@ namespace LiveSplit.UI.Components
 
         public bool AutomaticAbbreviations { get; set; }
         public Color BeforeNamesColor { get; set; }
+        public Color BeforeNamesColorLowCounter { get; set; }
+        public Color BeforeNamesColorSameCounter { get; set; }
+        public Color BeforeNamesColorHighCounter { get; set; }
         public Color CurrentNamesColor { get; set; }
+        public Color CurrentNamesColorLowCounter { get; set; }
+        public Color CurrentNamesColorSameCounter { get; set; }
+        public Color CurrentNamesColorHighCounter { get; set; }
         public Color AfterNamesColor { get; set; }
         public bool OverrideTextColor { get; set; }
         public Color BeforeTimesColor { get; set; }
@@ -126,7 +132,13 @@ namespace LiveSplit.UI.Components
             IconSize = 24f;
             AutomaticAbbreviations = false;
             BeforeNamesColor = Color.FromArgb(255, 255, 255);
+            BeforeNamesColorLowCounter = Color.FromArgb(255, 255, 255);
+            BeforeNamesColorSameCounter = Color.FromArgb(255, 255, 255);
+            BeforeNamesColorHighCounter = Color.FromArgb(255, 255, 255);
             CurrentNamesColor = Color.FromArgb(255, 255, 255);
+            CurrentNamesColorLowCounter = Color.FromArgb(255, 255, 255);
+            CurrentNamesColorSameCounter = Color.FromArgb(255, 255, 255);
+            CurrentNamesColorHighCounter = Color.FromArgb(255, 255, 255);
             AfterNamesColor = Color.FromArgb(255, 255, 255);
             OverrideTextColor = false;
             BeforeTimesColor = Color.FromArgb(255, 255, 255);
@@ -156,7 +168,13 @@ namespace LiveSplit.UI.Components
             btnBottomColor.DataBindings.Add("BackColor", this, "CurrentSplitBottomColor", false, DataSourceUpdateMode.OnPropertyChanged);
             chkAutomaticAbbreviations.DataBindings.Add("Checked", this, "AutomaticAbbreviations", false, DataSourceUpdateMode.OnPropertyChanged);
             btnBeforeNamesColor.DataBindings.Add("BackColor", this, "BeforeNamesColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnBeforeNamesColorLowCounter.DataBindings.Add("BackColor", this, "BeforeNamesColorLowCounter", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnBeforeNamesColorSameCounter.DataBindings.Add("BackColor", this, "BeforeNamesColorSameCounter", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnBeforeNamesColorHighCounter.DataBindings.Add("BackColor", this, "BeforeNamesColorHighCounter", false, DataSourceUpdateMode.OnPropertyChanged);
             btnCurrentNamesColor.DataBindings.Add("BackColor", this, "CurrentNamesColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnCurrentNamesColorLowCounter.DataBindings.Add("BackColor", this, "CurrentNamesColorLowCounter", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnCurrentNamesColorSameCounter.DataBindings.Add("BackColor", this, "CurrentNamesColorSameCounter", false, DataSourceUpdateMode.OnPropertyChanged);
+            btnCurrentNamesColorHighCounter.DataBindings.Add("BackColor", this, "CurrentNamesColorHighCounter", false, DataSourceUpdateMode.OnPropertyChanged);
             btnAfterNamesColor.DataBindings.Add("BackColor", this, "AfterNamesColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnBeforeTimesColor.DataBindings.Add("BackColor", this, "BeforeTimesColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnCurrentTimesColor.DataBindings.Add("BackColor", this, "CurrentTimesColor", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -210,7 +228,12 @@ namespace LiveSplit.UI.Components
         void chkOverrideTextColor_CheckedChanged(object sender, EventArgs e)
         {
             label3.Enabled = label10.Enabled = label13.Enabled = btnBeforeNamesColor.Enabled
-            = btnCurrentNamesColor.Enabled = btnAfterNamesColor.Enabled = chkOverrideTextColor.Checked;
+            = btnCurrentNamesColor.Enabled = btnAfterNamesColor.Enabled
+            = labelZero.Enabled = labelLow.Enabled = labelSame.Enabled = labelHigh.Enabled
+            = btnBeforeNamesColorLowCounter.Enabled = btnBeforeNamesColorSameCounter.Enabled
+            = btnBeforeNamesColorHighCounter.Enabled = btnCurrentNamesColorLowCounter.Enabled
+            = btnCurrentNamesColorSameCounter.Enabled = btnCurrentNamesColorHighCounter.Enabled
+            = chkOverrideTextColor.Checked;
         }
 
         void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
@@ -414,18 +437,33 @@ namespace LiveSplit.UI.Components
             if (version >= new Version(1, 3))
             {
                 BeforeNamesColor = SettingsHelper.ParseColor(element["BeforeNamesColor"]);
+                BeforeNamesColorLowCounter = SettingsHelper.ParseColor(element["BeforeNamesColorLowCounter"]);
+                BeforeNamesColorSameCounter = SettingsHelper.ParseColor(element["BeforeNamesColorSameCounter"]);
+                BeforeNamesColorHighCounter = SettingsHelper.ParseColor(element["BeforeNamesColorHighCounter"]);
                 CurrentNamesColor = SettingsHelper.ParseColor(element["CurrentNamesColor"]);
+                CurrentNamesColorLowCounter = SettingsHelper.ParseColor(element["CurrentNamesColorLowCounter"]);
+                CurrentNamesColorSameCounter = SettingsHelper.ParseColor(element["CurrentNamesColorSameCounter"]);
+                CurrentNamesColorHighCounter = SettingsHelper.ParseColor(element["CurrentNamesColorHighCounter"]);
                 AfterNamesColor = SettingsHelper.ParseColor(element["AfterNamesColor"]);
                 OverrideTextColor = SettingsHelper.ParseBool(element["OverrideTextColor"]);
             }
             else
             {
                 if (version >= new Version(1, 2))
-                    BeforeNamesColor = CurrentNamesColor = AfterNamesColor = SettingsHelper.ParseColor(element["SplitNamesColor"]);
+                    BeforeNamesColor = CurrentNamesColor = AfterNamesColor
+                        = BeforeNamesColorLowCounter = BeforeNamesColorSameCounter = BeforeNamesColorHighCounter
+                        = CurrentNamesColorLowCounter = CurrentNamesColorSameCounter = CurrentNamesColorHighCounter
+                        = SettingsHelper.ParseColor(element["SplitNamesColor"]);
                 else
                 {
                     BeforeNamesColor = Color.FromArgb(255, 255, 255);
+                    BeforeNamesColorLowCounter = Color.FromArgb(255, 255, 255);
+                    BeforeNamesColorSameCounter = Color.FromArgb(255, 255, 255);
+                    BeforeNamesColorHighCounter = Color.FromArgb(255, 255, 255);
                     CurrentNamesColor = Color.FromArgb(255, 255, 255);
+                    CurrentNamesColorLowCounter = Color.FromArgb(255, 255, 255);
+                    CurrentNamesColorSameCounter = Color.FromArgb(255, 255, 255);
+                    CurrentNamesColorHighCounter = Color.FromArgb(255, 255, 255);
                     AfterNamesColor = Color.FromArgb(255, 255, 255);
                 }
                 OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);  
@@ -475,7 +513,13 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "SplitTimesAccuracy", SplitTimesAccuracy) ^
             SettingsHelper.CreateSetting(document, parent, "AutomaticAbbreviations", AutomaticAbbreviations) ^
             SettingsHelper.CreateSetting(document, parent, "BeforeNamesColor", BeforeNamesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "BeforeNamesColorLowCounter", BeforeNamesColorLowCounter) ^
+            SettingsHelper.CreateSetting(document, parent, "BeforeNamesColorSameCounter", BeforeNamesColorSameCounter) ^
+            SettingsHelper.CreateSetting(document, parent, "BeforeNamesColorHighCounter", BeforeNamesColorHighCounter) ^
             SettingsHelper.CreateSetting(document, parent, "CurrentNamesColor", CurrentNamesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentNamesColorLowCounter", CurrentNamesColorLowCounter) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentNamesColorSameCounter", CurrentNamesColorSameCounter) ^
+            SettingsHelper.CreateSetting(document, parent, "CurrentNamesColorHighCounter", CurrentNamesColorHighCounter) ^
             SettingsHelper.CreateSetting(document, parent, "AfterNamesColor", AfterNamesColor) ^
             SettingsHelper.CreateSetting(document, parent, "OverrideTextColor", OverrideTextColor) ^
             SettingsHelper.CreateSetting(document, parent, "BeforeTimesColor", BeforeTimesColor) ^
@@ -798,5 +842,42 @@ namespace LiveSplit.UI.Components
         {
             e.SuppressKeyPress = true;
         }
+
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void labelZero_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void labelLow_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void labelSame_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void labelHigh_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

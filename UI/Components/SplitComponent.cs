@@ -369,18 +369,70 @@ namespace LiveSplit.UI.Components
                 NameLabel.Text = SplitName;
 
                 var splitIndex = state.Run.IndexOf(Split);
+                //if (splitIndex < state.CurrentSplitIndex)
+                //{
+                //    NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.BeforeNamesColor : state.LayoutSettings.TextColor;
+                //}
+                //else
+                //{
+                //    if (Split == state.CurrentSplit)
+                //        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.CurrentNamesColor : state.LayoutSettings.TextColor;
+                //    else
+                //        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
+                //}
+                int counter = CounterList[splitIndex];
+                int pbCounter = GetPBCounter(splitIndex);
+
                 if (splitIndex < state.CurrentSplitIndex)
                 {
-                    NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.BeforeNamesColor : state.LayoutSettings.TextColor;
+                    if (!Settings.OverrideTextColor)
+                    {
+                        NameLabel.ForeColor = state.LayoutSettings.TextColor;
+                    }
+                    else if (counter == 0)
+                    {
+                        NameLabel.ForeColor = Settings.BeforeNamesColor;
+                    }
+                    else if (counter < pbCounter)
+                    {
+                        NameLabel.ForeColor = Settings.BeforeNamesColorLowCounter;
+                    }
+                    else if (counter == pbCounter)
+                    {
+                        NameLabel.ForeColor = Settings.BeforeNamesColorSameCounter;
+                    }
+                    else // counter > pbCounter
+                    {
+                        NameLabel.ForeColor = Settings.BeforeNamesColorHighCounter;
+                    }
+                }
+                else if (Split == state.CurrentSplit)
+                {
+                    if (!Settings.OverrideTextColor)
+                    {
+                        NameLabel.ForeColor = state.LayoutSettings.TextColor;
+                    }
+                    else if (counter == 0)
+                    {
+                        NameLabel.ForeColor = Settings.CurrentNamesColor;
+                    }
+                    else if (counter < pbCounter)
+                    {
+                        NameLabel.ForeColor = Settings.CurrentNamesColorLowCounter;
+                    }
+                    else if (counter == pbCounter)
+                    {
+                        NameLabel.ForeColor = Settings.CurrentNamesColorSameCounter;
+                    }
+                    else // counter > pbCounter
+                    {
+                        NameLabel.ForeColor = Settings.CurrentNamesColorHighCounter;
+                    }
                 }
                 else
                 {
-                    if (Split == state.CurrentSplit)
-                        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.CurrentNamesColor : state.LayoutSettings.TextColor;
-                    else
-                        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
+                    NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
                 }
-
                 foreach (var label in LabelsList)
                 {
                     var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));

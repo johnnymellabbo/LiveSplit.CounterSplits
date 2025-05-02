@@ -39,6 +39,16 @@
             this.btnCurrentNamesColor = new System.Windows.Forms.Button();
             this.btnAfterNamesColor = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
+            this.btnBeforeNamesColorLowCounter = new System.Windows.Forms.Button();
+            this.btnBeforeNamesColorSameCounter = new System.Windows.Forms.Button();
+            this.btnBeforeNamesColorHighCounter = new System.Windows.Forms.Button();
+            this.btnCurrentNamesColorLowCounter = new System.Windows.Forms.Button();
+            this.btnCurrentNamesColorSameCounter = new System.Windows.Forms.Button();
+            this.btnCurrentNamesColorHighCounter = new System.Windows.Forms.Button();
+            this.labelZero = new System.Windows.Forms.Label();
+            this.labelLow = new System.Windows.Forms.Label();
+            this.labelSame = new System.Windows.Forms.Label();
+            this.labelHigh = new System.Windows.Forms.Label();
             this.chkAutomaticAbbreviations = new System.Windows.Forms.CheckBox();
             this.groupColumns = new System.Windows.Forms.GroupBox();
             this.tableColumns = new System.Windows.Forms.TableLayoutPanel();
@@ -104,14 +114,14 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtSave = new System.Windows.Forms.TextBox();
             this.txtIncrement = new System.Windows.Forms.TextBox();
             this.lblCounterIncrement = new System.Windows.Forms.Label();
             this.lblCounterDecrement = new System.Windows.Forms.Label();
             this.lblCounterReset = new System.Windows.Forms.Label();
             this.txtDecrement = new System.Windows.Forms.TextBox();
             this.txtReset = new System.Windows.Forms.TextBox();
-            this.txtSave = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.groupBox9.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -181,9 +191,13 @@
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.41801F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.58199F));
+            this.tableLayoutPanel3.ColumnCount = 6;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 153F));
             this.tableLayoutPanel3.Controls.Add(this.label13, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.chkOverrideTextColor, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnBeforeNamesColor, 1, 1);
@@ -191,16 +205,28 @@
             this.tableLayoutPanel3.Controls.Add(this.btnCurrentNamesColor, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.btnAfterNamesColor, 1, 3);
             this.tableLayoutPanel3.Controls.Add(this.label10, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.btnBeforeNamesColorLowCounter, 2, 1);
+            this.tableLayoutPanel3.Controls.Add(this.btnBeforeNamesColorSameCounter, 3, 1);
+            this.tableLayoutPanel3.Controls.Add(this.btnBeforeNamesColorHighCounter, 4, 1);
+            this.tableLayoutPanel3.Controls.Add(this.btnCurrentNamesColorLowCounter, 2, 2);
+            this.tableLayoutPanel3.Controls.Add(this.btnCurrentNamesColorSameCounter, 3, 2);
+            this.tableLayoutPanel3.Controls.Add(this.btnCurrentNamesColorHighCounter, 4, 2);
+            this.tableLayoutPanel3.Controls.Add(this.labelZero, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelLow, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelSame, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelHigh, 3, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 4;
+            this.tableLayoutPanel3.RowCount = 5;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(433, 117);
             this.tableLayoutPanel3.TabIndex = 0;
+            this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
             // label13
             // 
@@ -208,19 +234,19 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(3, 95);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(181, 13);
+            this.label13.Size = new System.Drawing.Size(154, 13);
             this.label13.TabIndex = 15;
             this.label13.Text = "Color (After Current Split):";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // chkOverrideTextColor
             // 
             this.chkOverrideTextColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.chkOverrideTextColor.AutoSize = true;
-            this.tableLayoutPanel3.SetColumnSpan(this.chkOverrideTextColor, 2);
             this.chkOverrideTextColor.Location = new System.Drawing.Point(7, 6);
             this.chkOverrideTextColor.Margin = new System.Windows.Forms.Padding(7, 3, 3, 3);
             this.chkOverrideTextColor.Name = "chkOverrideTextColor";
-            this.chkOverrideTextColor.Size = new System.Drawing.Size(423, 17);
+            this.chkOverrideTextColor.Size = new System.Drawing.Size(150, 17);
             this.chkOverrideTextColor.TabIndex = 0;
             this.chkOverrideTextColor.Text = "Override Layout Settings";
             this.chkOverrideTextColor.UseVisualStyleBackColor = true;
@@ -228,10 +254,9 @@
             // 
             // btnBeforeNamesColor
             // 
-            this.btnBeforeNamesColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnBeforeNamesColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.btnBeforeNamesColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBeforeNamesColor.Location = new System.Drawing.Point(190, 32);
+            this.btnBeforeNamesColor.Location = new System.Drawing.Point(173, 32);
             this.btnBeforeNamesColor.Name = "btnBeforeNamesColor";
             this.btnBeforeNamesColor.Size = new System.Drawing.Size(23, 23);
             this.btnBeforeNamesColor.TabIndex = 1;
@@ -244,16 +269,16 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 37);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(181, 13);
+            this.label3.Size = new System.Drawing.Size(154, 13);
             this.label3.TabIndex = 11;
             this.label3.Text = "Color (Before Current Split):";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // btnCurrentNamesColor
             // 
-            this.btnCurrentNamesColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCurrentNamesColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.btnCurrentNamesColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCurrentNamesColor.Location = new System.Drawing.Point(190, 61);
+            this.btnCurrentNamesColor.Location = new System.Drawing.Point(173, 61);
             this.btnCurrentNamesColor.Name = "btnCurrentNamesColor";
             this.btnCurrentNamesColor.Size = new System.Drawing.Size(23, 23);
             this.btnCurrentNamesColor.TabIndex = 12;
@@ -262,10 +287,9 @@
             // 
             // btnAfterNamesColor
             // 
-            this.btnAfterNamesColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAfterNamesColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.btnAfterNamesColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnAfterNamesColor.Location = new System.Drawing.Point(190, 90);
+            this.btnAfterNamesColor.Location = new System.Drawing.Point(173, 90);
             this.btnAfterNamesColor.Name = "btnAfterNamesColor";
             this.btnAfterNamesColor.Size = new System.Drawing.Size(23, 24);
             this.btnAfterNamesColor.TabIndex = 13;
@@ -278,9 +302,120 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(3, 66);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(181, 13);
+            this.label10.Size = new System.Drawing.Size(154, 13);
             this.label10.TabIndex = 14;
             this.label10.Text = "Color (Current Split):";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
+            // 
+            // btnBeforeNamesColorLowCounter
+            // 
+            this.btnBeforeNamesColorLowCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnBeforeNamesColorLowCounter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnBeforeNamesColorLowCounter.Location = new System.Drawing.Point(223, 32);
+            this.btnBeforeNamesColorLowCounter.Name = "btnBeforeNamesColorLowCounter";
+            this.btnBeforeNamesColorLowCounter.Size = new System.Drawing.Size(23, 23);
+            this.btnBeforeNamesColorLowCounter.TabIndex = 2;
+            this.btnBeforeNamesColorLowCounter.UseVisualStyleBackColor = false;
+            this.btnBeforeNamesColorLowCounter.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // btnBeforeNamesColorSameCounter
+            // 
+            this.btnBeforeNamesColorSameCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnBeforeNamesColorSameCounter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnBeforeNamesColorSameCounter.Location = new System.Drawing.Point(273, 32);
+            this.btnBeforeNamesColorSameCounter.Name = "btnBeforeNamesColorSameCounter";
+            this.btnBeforeNamesColorSameCounter.Size = new System.Drawing.Size(23, 23);
+            this.btnBeforeNamesColorSameCounter.TabIndex = 3;
+            this.btnBeforeNamesColorSameCounter.UseVisualStyleBackColor = false;
+            this.btnBeforeNamesColorSameCounter.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // btnBeforeNamesColorHighCounter
+            // 
+            this.btnBeforeNamesColorHighCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnBeforeNamesColorHighCounter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnBeforeNamesColorHighCounter.Location = new System.Drawing.Point(323, 32);
+            this.btnBeforeNamesColorHighCounter.Name = "btnBeforeNamesColorHighCounter";
+            this.btnBeforeNamesColorHighCounter.Size = new System.Drawing.Size(23, 23);
+            this.btnBeforeNamesColorHighCounter.TabIndex = 4;
+            this.btnBeforeNamesColorHighCounter.UseVisualStyleBackColor = false;
+            this.btnBeforeNamesColorHighCounter.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // btnCurrentNamesColorLowCounter
+            // 
+            this.btnCurrentNamesColorLowCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnCurrentNamesColorLowCounter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCurrentNamesColorLowCounter.Location = new System.Drawing.Point(223, 61);
+            this.btnCurrentNamesColorLowCounter.Name = "btnCurrentNamesColorLowCounter";
+            this.btnCurrentNamesColorLowCounter.Size = new System.Drawing.Size(23, 23);
+            this.btnCurrentNamesColorLowCounter.TabIndex = 5;
+            this.btnCurrentNamesColorLowCounter.UseVisualStyleBackColor = false;
+            this.btnCurrentNamesColorLowCounter.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // btnCurrentNamesColorSameCounter
+            // 
+            this.btnCurrentNamesColorSameCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnCurrentNamesColorSameCounter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCurrentNamesColorSameCounter.Location = new System.Drawing.Point(273, 61);
+            this.btnCurrentNamesColorSameCounter.Name = "btnCurrentNamesColorSameCounter";
+            this.btnCurrentNamesColorSameCounter.Size = new System.Drawing.Size(23, 23);
+            this.btnCurrentNamesColorSameCounter.TabIndex = 6;
+            this.btnCurrentNamesColorSameCounter.UseVisualStyleBackColor = false;
+            this.btnCurrentNamesColorSameCounter.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // btnCurrentNamesColorHighCounter
+            // 
+            this.btnCurrentNamesColorHighCounter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.btnCurrentNamesColorHighCounter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCurrentNamesColorHighCounter.Location = new System.Drawing.Point(323, 61);
+            this.btnCurrentNamesColorHighCounter.Name = "btnCurrentNamesColorHighCounter";
+            this.btnCurrentNamesColorHighCounter.Size = new System.Drawing.Size(23, 23);
+            this.btnCurrentNamesColorHighCounter.TabIndex = 7;
+            this.btnCurrentNamesColorHighCounter.UseVisualStyleBackColor = false;
+            this.btnCurrentNamesColorHighCounter.Click += new System.EventHandler(this.ColorButtonClick);
+            // 
+            // labelZero
+            // 
+            this.labelZero.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelZero.AutoSize = true;
+            this.labelZero.Location = new System.Drawing.Point(169, 8);
+            this.labelZero.Name = "labelZero";
+            this.labelZero.Size = new System.Drawing.Size(32, 13);
+            this.labelZero.TabIndex = 0;
+            this.labelZero.Text = "C = 0";
+            this.labelZero.Click += new System.EventHandler(this.labelZero_Click);
+            // 
+            // labelLow
+            // 
+            this.labelLow.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelLow.AutoSize = true;
+            this.labelLow.Location = new System.Drawing.Point(215, 8);
+            this.labelLow.Name = "labelLow";
+            this.labelLow.Size = new System.Drawing.Size(40, 13);
+            this.labelLow.TabIndex = 0;
+            this.labelLow.Text = "C < PB";
+            this.labelLow.Click += new System.EventHandler(this.labelLow_Click);
+            // 
+            // labelSame
+            // 
+            this.labelSame.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelSame.AutoSize = true;
+            this.labelSame.Location = new System.Drawing.Point(265, 8);
+            this.labelSame.Name = "labelSame";
+            this.labelSame.Size = new System.Drawing.Size(40, 13);
+            this.labelSame.TabIndex = 0;
+            this.labelSame.Text = "C = PB";
+            this.labelSame.Click += new System.EventHandler(this.labelSame_Click);
+            // 
+            // labelHigh
+            // 
+            this.labelHigh.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelHigh.AutoSize = true;
+            this.labelHigh.Location = new System.Drawing.Point(315, 8);
+            this.labelHigh.Name = "labelHigh";
+            this.labelHigh.Size = new System.Drawing.Size(40, 13);
+            this.labelHigh.TabIndex = 0;
+            this.labelHigh.Text = "C > PB";
+            this.labelHigh.Click += new System.EventHandler(this.labelHigh_Click);
             // 
             // chkAutomaticAbbreviations
             // 
@@ -1190,6 +1325,27 @@
             this.tableLayoutPanel11.Size = new System.Drawing.Size(430, 99);
             this.tableLayoutPanel11.TabIndex = 1;
             // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 81);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(75, 13);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "Save Counter:";
+            // 
+            // txtSave
+            // 
+            this.txtSave.BackColor = System.Drawing.SystemColors.Menu;
+            this.txtSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSave.Location = new System.Drawing.Point(139, 78);
+            this.txtSave.Name = "txtSave";
+            this.txtSave.Size = new System.Drawing.Size(288, 20);
+            this.txtSave.TabIndex = 6;
+            this.txtSave.Enter += new System.EventHandler(this.txtSave_Enter);
+            this.txtSave.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSave_KeyDown);
+            // 
             // txtIncrement
             // 
             this.txtIncrement.BackColor = System.Drawing.SystemColors.Menu;
@@ -1252,28 +1408,6 @@
             this.txtReset.TabIndex = 5;
             this.txtReset.Enter += new System.EventHandler(this.txtReset_Enter);
             this.txtReset.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtReset_KeyDown);
-            // 
-            // txtSave
-            // 
-            this.txtSave.BackColor = System.Drawing.SystemColors.Menu;
-            this.txtSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtSave.Location = new System.Drawing.Point(139, 78);
-            this.txtSave.Name = "txtSave";
-            this.txtSave.Size = new System.Drawing.Size(288, 20);
-            this.txtSave.TabIndex = 6;
-            this.txtSave.Enter += new System.EventHandler(this.txtSave_Enter);
-            this.txtSave.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSave_KeyDown);
-
-            // 
-            // label12
-            // 
-            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 81);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(75, 13);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "Save Counter:";
             // 
             // SplitsSettings
             // 
@@ -1397,8 +1531,14 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox chkOverrideTextColor;
         private System.Windows.Forms.Button btnBeforeNamesColor;
+        private System.Windows.Forms.Button btnBeforeNamesColorLowCounter;
+        private System.Windows.Forms.Button btnBeforeNamesColorSameCounter;
+        private System.Windows.Forms.Button btnBeforeNamesColorHighCounter;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCurrentNamesColor;
+        private System.Windows.Forms.Button btnCurrentNamesColorLowCounter;
+        private System.Windows.Forms.Button btnCurrentNamesColorSameCounter;
+        private System.Windows.Forms.Button btnCurrentNamesColorHighCounter;
         private System.Windows.Forms.Button btnAfterNamesColor;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox chkAutomaticAbbreviations;
@@ -1411,5 +1551,9 @@
         private System.Windows.Forms.TextBox txtReset;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox txtSave;
+        private System.Windows.Forms.Label labelZero;
+        private System.Windows.Forms.Label labelLow;
+        private System.Windows.Forms.Label labelSame;
+        private System.Windows.Forms.Label labelHigh;
     }
 }
