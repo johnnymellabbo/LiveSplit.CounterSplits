@@ -74,6 +74,10 @@
     </Compile>
     <Compile Include="UI\ExtendedGradientType.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Components\SplitsSettings.resx">
+      <DependentUpon>SplitsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -134,8 +134,6 @@
             this.chkPercentage = new System.Windows.Forms.CheckBox();
             this.lblText = new System.Windows.Forms.Label();
             this.txtText = new System.Windows.Forms.TextBox();
-            this.rdoShowProgressCurrentIndex = new System.Windows.Forms.RadioButton();
-            this.rdoShowProgressNextIndex = new System.Windows.Forms.RadioButton();
             this.groupBox9.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1740,7 +1738,5 @@
         private System.Windows.Forms.CheckBox chkPercentage;
         private System.Windows.Forms.Label lblText;
         private System.Windows.Forms.TextBox txtText;
-        private System.Windows.Forms.RadioButton rdoShowProgressCurrentIndex;
-        private System.Windows.Forms.RadioButton rdoShowProgressNextIndex;
     }
 }

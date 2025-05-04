@@ -72,15 +72,11 @@ namespace LiveSplit.UI.Components
 
             int total;
             if (Settings.AlwaysShowLastSplit)
-            {
-                total = state.Run.Count - 1;
-            }
+                total = state.Run.Count - 1; // Exclude the last split, used for counter totals
             else
-            {
                 total = state.Run.Count;
-            }
 
-            int cur = Math.Min(state.CurrentSplitIndex + 1, total);
+            int cur = Math.Max(Math.Min(state.CurrentSplitIndex, total), 0); // Ensure cur is within bounds (0 to total)
             int percent = (int)Math.Round((double)cur / total * 100);
             string fraction = $"{cur}/{total}";
             string percentText = $"{percent}%";
@@ -116,11 +112,11 @@ namespace LiveSplit.UI.Components
                 TextLabel.ForeColor = state.LayoutSettings.TextColor;
 
                 TextLabel.Font = state.LayoutSettings.TextFont;
-                TextLabel.X = 5 + 0; //TODO: ICON WIDTH
+                TextLabel.X = 5;
                 TextLabel.HasShadow = state.LayoutSettings.DropShadows;
 
                 var nameX = width - 7;
-                TextLabel.Width = nameX - 0; //TODO: ICON WIDTH
+                TextLabel.Width = nameX;
                 TextLabel.Draw(g);
 
                 barX += g.MeasureString(TextLabel.Text, TextLabel.Font).Width;
@@ -150,11 +146,11 @@ namespace LiveSplit.UI.Components
                 ProgressLabel.ForeColor = state.LayoutSettings.TextColor;
 
                 ProgressLabel.Font = state.LayoutSettings.TextFont;
-                ProgressLabel.X = 5 + 0;
+                ProgressLabel.X = 5;
                 ProgressLabel.HasShadow = state.LayoutSettings.DropShadows;
 
                 var nameX = width - 7;
-                ProgressLabel.Width = nameX - 0;
+                ProgressLabel.Width = nameX;
                 ProgressLabel.Draw(g);
 
                 barWidth -= g.MeasureString(ProgressLabel.Text, ProgressLabel.Font).Width;
@@ -162,15 +158,29 @@ namespace LiveSplit.UI.Components
             if (Settings.ShowProgressBar)
             {
                 float segmentWidth = barWidth / total;
-                for (int i = 0; i < total; i++)
+                int start = 0;
+
+                while (start < total)
                 {
-                    float segmentX = barX + i * segmentWidth - 1;
-                    float segmentW = segmentWidth + 2;
-                    Color fillColor = GetColorForSplit(i, state, SplitList);
-                    using (var backBrush = new SolidBrush(fillColor))
+                    // Get the current segment color
+                    Color currentColor = GetColorForSplit(start, state, SplitList);
+                    int end = start + 1;
+
+                    // Group the next segments with the same color
+                    while (end < total && GetColorForSplit(end, state, SplitList) == currentColor)
+                        end++;
+
+                    // Calculate start and end to draw the segment
+                    float segmentX = barX + start * segmentWidth;
+                    float segmentW = (end - start) * segmentWidth;
+
+                    // Draw the segment
+                    using (var backBrush = new SolidBrush(currentColor))
                     {
                         g.FillRectangle(backBrush, segmentX, barY, segmentW, barHeight);
                     }
+
+                    start = end;
                 }
             }
         }
@@ -181,8 +191,6 @@ namespace LiveSplit.UI.Components
 
         private void DrawEmpty(Graphics g, float width, float height)
         {
-            // Dibujar una línea de fondo opcional (debug visual)
-            // g.FillRectangle(Brushes.Red, 0, 0, width, height); // Descomenta para probar
         }
         Color GetColorForSplit(int i, LiveSplitState state, IList<SplitComponent> SplitList)
         {

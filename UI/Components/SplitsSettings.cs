@@ -88,7 +88,6 @@ namespace LiveSplit.UI.Components
         public bool ShowSplitCount { get; set; }
         public bool ShowPercentage { get; set; }
         public string ProgressText { get; set; }
-        public int ShowProgressCurrentIndex { get; set; }
 
         public TimeAccuracy SplitTimesAccuracy { get; set; }
         public GradientType CurrentSplitGradient { get; set; }
@@ -175,7 +174,6 @@ namespace LiveSplit.UI.Components
             ShowSplitCount = true;
             ShowPercentage = false;
             ProgressText = "Progress:";
-            ShowProgressCurrentIndex = 0;
 
             txtIncrement.Text = FormatKey(IncrementKey);
             txtDecrement.Text = FormatKey(DecrementKey);
@@ -227,10 +225,6 @@ namespace LiveSplit.UI.Components
             rdoMiddle.CheckedChanged += UpdateShowProgressTop;
             rdoBottom.CheckedChanged += UpdateShowProgressTop;
             InitializeShowProgressTop();
-
-            rdoShowProgressCurrentIndex.CheckedChanged += UpdateShowProgressCurrentIndex;
-            rdoShowProgressNextIndex.CheckedChanged += UpdateShowProgressCurrentIndex;
-            InitializeShowProgressCurrentIndex();
 
             ColumnsList = new List<ColumnSettings>();
             ColumnsList.Add(new ColumnSettings(CurrentState, "Counter", ColumnsList) { Data = new ColumnData("Counter", ColumnType.Counter, "Current Comparison", "Current Timing Method") });
@@ -285,8 +279,6 @@ namespace LiveSplit.UI.Components
             chkPercentage.Enabled = isEnabled;
             lblText.Enabled = isEnabled && chkText.Checked;
             txtText.Enabled = isEnabled && chkText.Checked;
-            rdoShowProgressCurrentIndex.Enabled = isEnabled;
-            rdoShowProgressNextIndex.Enabled = isEnabled;
             ShowProgress = chkShowProgress.Checked;
             SplitLayoutChanged(this, null);
         }
@@ -405,20 +397,6 @@ namespace LiveSplit.UI.Components
             else if (ShowProgressTop == 2)
                 rdoBottom.Checked = true;
         }
-        private void UpdateShowProgressCurrentIndex(object sender, EventArgs e)
-        {
-           if (rdoShowProgressCurrentIndex.Checked)
-                ShowProgressCurrentIndex = 0;
-            else if (rdoShowProgressNextIndex.Checked)
-                ShowProgressCurrentIndex = 1;
-        }
-        private void InitializeShowProgressCurrentIndex()
-        {
-            if (ShowProgressCurrentIndex == 0)
-                rdoShowProgressCurrentIndex.Checked = true;
-            else if (ShowProgressCurrentIndex == 1)
-                rdoShowProgressNextIndex.Checked = true;
-        }
         
 
         void SplitsSettings_Load(object sender, EventArgs e)
@@ -480,11 +458,6 @@ namespace LiveSplit.UI.Components
                 rdoMiddle.Checked = true;
             else if (ShowProgressTop == 2)
                 rdoBottom.Checked = true;
-
-            if (ShowProgressCurrentIndex == 0)
-                rdoShowProgressCurrentIndex.Checked = true;
-            else if (ShowProgressCurrentIndex == 1)
-                rdoShowProgressNextIndex.Checked = true;
         }
 
         public void SetSettings(XmlNode node)
@@ -591,7 +564,6 @@ namespace LiveSplit.UI.Components
                 ShowSplitCount = SettingsHelper.ParseBool(element["ShowSplitCount"]);
                 ShowPercentage = SettingsHelper.ParseBool(element["ShowPercentage"]);
                 ProgressText = SettingsHelper.ParseString(element["ProgressText"], "Progress:");
-                ShowProgressCurrentIndex = SettingsHelper.ParseInt(element["ShowProgressCurrentIndex"], 0);
             }
             else
             {
@@ -602,7 +574,6 @@ namespace LiveSplit.UI.Components
                 ShowSplitCount = true;
                 ShowPercentage = false;
                 ProgressText = "Progress:";
-                ShowProgressCurrentIndex = 0;
             }
 
             XmlElement incrementElement = element["IncrementKey"];
@@ -690,7 +661,6 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "ShowSplitCount", ShowSplitCount);
             SettingsHelper.CreateSetting(document, parent, "ShowPercentage", ShowPercentage);
             SettingsHelper.CreateSetting(document, parent, "ProgressText", ProgressText);
-            SettingsHelper.CreateSetting(document, parent, "ShowProgressCurrentIndex", ShowProgressCurrentIndex);
 
             XmlElement columnsElement = null;
             if (document != null)
@@ -1005,19 +975,6 @@ namespace LiveSplit.UI.Components
             ShowProgressTop = 2;
             SplitLayoutChanged(this, null);
         }
-        private void rdoShowProgressCurrentIndex_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateShowProgressCurrentIndex(null, null);
-            ShowProgressCurrentIndex = 0;
-            SplitLayoutChanged(this, null);
-        }
-        private void rdoShowProgressNextIndex_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateShowProgressCurrentIndex(null, null);
-            ShowProgressCurrentIndex = 1;
-            SplitLayoutChanged(this, null);
-        }
-
 
         private void chkProgressBar_CheckedChanged(object sender, EventArgs e)
         {
