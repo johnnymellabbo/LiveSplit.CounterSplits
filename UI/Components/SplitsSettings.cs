@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using LiveSplit.Model.Input;
+using System.Xml.Linq;
 
 namespace LiveSplit.UI.Components
 {
@@ -79,6 +80,15 @@ namespace LiveSplit.UI.Components
         public Color CurrentTimesColor { get; set; }
         public Color AfterTimesColor { get; set; }
         public bool OverrideTimesColor { get; set; }
+
+        public bool ShowProgress { get; set; }
+        public int ShowProgressTop { get; set; }
+        public bool ShowProgressText { get; set; }
+        public bool ShowProgressBar { get; set; }
+        public bool ShowSplitCount { get; set; }
+        public bool ShowPercentage { get; set; }
+        public string ProgressText { get; set; }
+        public int ShowProgressCurrentIndex { get; set; }
 
         public TimeAccuracy SplitTimesAccuracy { get; set; }
         public GradientType CurrentSplitGradient { get; set; }
@@ -158,6 +168,15 @@ namespace LiveSplit.UI.Components
             ShowColumnLabels = false;
             LabelsColor = Color.FromArgb(255, 255, 255);
 
+            ShowProgress = false;
+            ShowProgressTop = 0;
+            ShowProgressText = true;
+            ShowProgressBar = true;
+            ShowSplitCount = true;
+            ShowPercentage = false;
+            ProgressText = "Progress:";
+            ShowProgressCurrentIndex = 0;
+
             txtIncrement.Text = FormatKey(IncrementKey);
             txtDecrement.Text = FormatKey(DecrementKey);
             txtReset.Text = FormatKey(ResetKey);
@@ -197,6 +216,21 @@ namespace LiveSplit.UI.Components
             cmbGradientType.DataBindings.Add("SelectedItem", this, "GradientString", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor1.DataBindings.Add("BackColor", this, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor2.DataBindings.Add("BackColor", this, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkShowProgress.DataBindings.Add("Checked", this, "ShowProgress", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkText.DataBindings.Add("Checked", this, "ShowProgressText", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkProgressBar.DataBindings.Add("Checked", this, "ShowProgressBar", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkSplitCount.DataBindings.Add("Checked", this, "ShowSplitCount", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkPercentage.DataBindings.Add("Checked", this, "ShowPercentage", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtText.DataBindings.Add("Text", this, "ProgressText", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            rdoTop.CheckedChanged += UpdateShowProgressTop;
+            rdoMiddle.CheckedChanged += UpdateShowProgressTop;
+            rdoBottom.CheckedChanged += UpdateShowProgressTop;
+            InitializeShowProgressTop();
+
+            rdoShowProgressCurrentIndex.CheckedChanged += UpdateShowProgressCurrentIndex;
+            rdoShowProgressNextIndex.CheckedChanged += UpdateShowProgressCurrentIndex;
+            InitializeShowProgressCurrentIndex();
 
             ColumnsList = new List<ColumnSettings>();
             ColumnsList.Add(new ColumnSettings(CurrentState, "Counter", ColumnsList) { Data = new ColumnData("Counter", ColumnType.Counter, "Current Comparison", "Current Timing Method") });
@@ -234,6 +268,36 @@ namespace LiveSplit.UI.Components
             = btnBeforeNamesColorHighCounter.Enabled = btnCurrentNamesColorLowCounter.Enabled
             = btnCurrentNamesColorSameCounter.Enabled = btnCurrentNamesColorHighCounter.Enabled
             = chkOverrideTextColor.Checked;
+        }
+
+        // Event to enable/disable controls for "Show Progress" table.
+        private void chkShowProgress_CheckedChanged(object sender, EventArgs e)
+        {
+            bool isEnabled = chkShowProgress.Checked;
+
+            // Habilitar o deshabilitar los controles según el estado del checkbox principal
+            rdoTop.Enabled = isEnabled;
+            rdoMiddle.Enabled = isEnabled;
+            rdoBottom.Enabled = isEnabled;
+            chkText.Enabled = isEnabled;
+            chkProgressBar.Enabled = isEnabled;
+            chkSplitCount.Enabled = isEnabled;
+            chkPercentage.Enabled = isEnabled;
+            lblText.Enabled = isEnabled && chkText.Checked;
+            txtText.Enabled = isEnabled && chkText.Checked;
+            rdoShowProgressCurrentIndex.Enabled = isEnabled;
+            rdoShowProgressNextIndex.Enabled = isEnabled;
+            ShowProgress = chkShowProgress.Checked;
+            SplitLayoutChanged(this, null);
+        }
+
+        // Event to enable/disable text field depending on "Text" checkbox.
+        private void chkText_CheckedChanged(object sender, EventArgs e)
+        {
+            lblText.Enabled = chkText.Checked;
+            txtText.Enabled = chkText.Checked;
+            ShowProgressText = chkText.Checked;
+            SplitLayoutChanged(this, null);
         }
 
         void rdoDeltaTenths_CheckedChanged(object sender, EventArgs e)
@@ -322,6 +386,40 @@ namespace LiveSplit.UI.Components
             ShowThinSeparators = chkThinSeparators.Checked;
             SplitLayoutChanged(this, null);
         }
+        private void UpdateShowProgressTop(object sender, EventArgs e)
+        {
+            if (rdoTop.Checked)
+                ShowProgressTop = 0;
+            else if (rdoMiddle.Checked)
+                ShowProgressTop = 1;
+            else if (rdoBottom.Checked)
+                ShowProgressTop = 2;
+        }
+
+        private void InitializeShowProgressTop()
+        {
+            if (ShowProgressTop == 0)
+                rdoTop.Checked = true;
+            else if (ShowProgressTop == 1)
+                rdoMiddle.Checked = true;
+            else if (ShowProgressTop == 2)
+                rdoBottom.Checked = true;
+        }
+        private void UpdateShowProgressCurrentIndex(object sender, EventArgs e)
+        {
+           if (rdoShowProgressCurrentIndex.Checked)
+                ShowProgressCurrentIndex = 0;
+            else if (rdoShowProgressNextIndex.Checked)
+                ShowProgressCurrentIndex = 1;
+        }
+        private void InitializeShowProgressCurrentIndex()
+        {
+            if (ShowProgressCurrentIndex == 0)
+                rdoShowProgressCurrentIndex.Checked = true;
+            else if (ShowProgressCurrentIndex == 1)
+                rdoShowProgressNextIndex.Checked = true;
+        }
+        
 
         void SplitsSettings_Load(object sender, EventArgs e)
         {
@@ -332,6 +430,9 @@ namespace LiveSplit.UI.Components
             chkOverrideTimesColor_CheckedChanged(null, null);
             chkColumnLabels_CheckedChanged(null, null);
             chkDisplayIcons_CheckedChanged(null, null);
+            chkText_CheckedChanged(null, null);
+            chkShowProgress_CheckedChanged(null, null);
+
             chkLockLastSplit.Enabled = chkShowBlankSplits.Checked;
 
             rdoSeconds.Checked = SplitTimesAccuracy == TimeAccuracy.Seconds;
@@ -371,6 +472,19 @@ namespace LiveSplit.UI.Components
                 chkColumnLabels.Enabled = true;
                 chkColumnLabels.DataBindings.Add("Checked", this, "ShowColumnLabels", false, DataSourceUpdateMode.OnPropertyChanged);
             }
+
+            // Inicializar el estado de los RadioButton según ShowProgressTop
+            if (ShowProgressTop == 0)
+                rdoTop.Checked = true;
+            else if (ShowProgressTop == 1)
+                rdoMiddle.Checked = true;
+            else if (ShowProgressTop == 2)
+                rdoBottom.Checked = true;
+
+            if (ShowProgressCurrentIndex == 0)
+                rdoShowProgressCurrentIndex.Checked = true;
+            else if (ShowProgressCurrentIndex == 1)
+                rdoShowProgressNextIndex.Checked = true;
         }
 
         public void SetSettings(XmlNode node)
@@ -466,7 +580,29 @@ namespace LiveSplit.UI.Components
                     CurrentNamesColorHighCounter = Color.FromArgb(255, 255, 255);
                     AfterNamesColor = Color.FromArgb(255, 255, 255);
                 }
-                OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);  
+                OverrideTextColor = !SettingsHelper.ParseBool(element["UseTextColor"], true);
+            }
+            if (version >= new Version(1, 4))
+            {
+                ShowProgress = SettingsHelper.ParseBool(element["ShowProgress"]);
+                ShowProgressTop = SettingsHelper.ParseInt(element["ShowProgressTop"], 0);
+                ShowProgressText = SettingsHelper.ParseBool(element["ShowProgressText"]);
+                ShowProgressBar = SettingsHelper.ParseBool(element["ShowProgressBar"]);
+                ShowSplitCount = SettingsHelper.ParseBool(element["ShowSplitCount"]);
+                ShowPercentage = SettingsHelper.ParseBool(element["ShowPercentage"]);
+                ProgressText = SettingsHelper.ParseString(element["ProgressText"], "Progress:");
+                ShowProgressCurrentIndex = SettingsHelper.ParseInt(element["ShowProgressCurrentIndex"], 0);
+            }
+            else
+            {
+                ShowProgress = false;
+                ShowProgressTop = 0;
+                ShowProgressText = true;
+                ShowProgressBar = true;
+                ShowSplitCount = true;
+                ShowPercentage = false;
+                ProgressText = "Progress:";
+                ShowProgressCurrentIndex = 0;
             }
 
             XmlElement incrementElement = element["IncrementKey"];
@@ -547,6 +683,14 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "DecrementKey", DecrementKey) ^
             SettingsHelper.CreateSetting(document, parent, "ResetKey", ResetKey) ^
             SettingsHelper.CreateSetting(document, parent, "SaveKey", SaveKey);
+            SettingsHelper.CreateSetting(document, parent, "ShowProgress", ShowProgress);
+            SettingsHelper.CreateSetting(document, parent, "ShowProgressTop", ShowProgressTop);
+            SettingsHelper.CreateSetting(document, parent, "ShowProgressText", ShowProgressText);
+            SettingsHelper.CreateSetting(document, parent, "ShowProgressBar", ShowProgressBar);
+            SettingsHelper.CreateSetting(document, parent, "ShowSplitCount", ShowSplitCount);
+            SettingsHelper.CreateSetting(document, parent, "ShowPercentage", ShowPercentage);
+            SettingsHelper.CreateSetting(document, parent, "ProgressText", ProgressText);
+            SettingsHelper.CreateSetting(document, parent, "ShowProgressCurrentIndex", ShowProgressCurrentIndex);
 
             XmlElement columnsElement = null;
             if (document != null)
@@ -843,41 +987,64 @@ namespace LiveSplit.UI.Components
             e.SuppressKeyPress = true;
         }
 
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        private void rdoTop_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateShowProgressTop(null, null);
+            ShowProgressTop = 0;
+            SplitLayoutChanged(this, null);
+        }
+        private void rdoMiddle_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateShowProgressTop(null, null);
+            ShowProgressTop = 1;
+            SplitLayoutChanged(this, null);
+        }
+        private void rdoBottom_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateShowProgressTop(null, null);
+            ShowProgressTop = 2;
+            SplitLayoutChanged(this, null);
+        }
+        private void rdoShowProgressCurrentIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateShowProgressCurrentIndex(null, null);
+            ShowProgressCurrentIndex = 0;
+            SplitLayoutChanged(this, null);
+        }
+        private void rdoShowProgressNextIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateShowProgressCurrentIndex(null, null);
+            ShowProgressCurrentIndex = 1;
+            SplitLayoutChanged(this, null);
+        }
+
+
+        private void chkProgressBar_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowProgressBar = chkProgressBar.Checked;
+            SplitLayoutChanged(this, null);
+        }
+
+        private void chkSplitCount_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowSplitCount = chkSplitCount.Checked;
+            SplitLayoutChanged(this, null);
+        }
+
+        private void chkPercentage_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowPercentage = chkPercentage.Checked;
+            SplitLayoutChanged(this, null);
+        }
+
+        private void txtText_TextChanged(object sender, EventArgs e)
+        {
+            ProgressText = txtText.Text;
+        }
+
+        private void groupBoxShowProgress_Enter(object sender, EventArgs e)
         {
 
         }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void labelZero_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void labelLow_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void labelSame_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void labelHigh_Click(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

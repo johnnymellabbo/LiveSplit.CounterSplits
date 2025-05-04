@@ -212,3 +212,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+# VS env
+.vs/

@@ -369,17 +369,6 @@ namespace LiveSplit.UI.Components
                 NameLabel.Text = SplitName;
 
                 var splitIndex = state.Run.IndexOf(Split);
-                //if (splitIndex < state.CurrentSplitIndex)
-                //{
-                //    NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.BeforeNamesColor : state.LayoutSettings.TextColor;
-                //}
-                //else
-                //{
-                //    if (Split == state.CurrentSplit)
-                //        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.CurrentNamesColor : state.LayoutSettings.TextColor;
-                //    else
-                //        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
-                //}
                 int counter = CounterList[splitIndex];
                 int pbCounter = GetPBCounter(splitIndex);
 
@@ -453,6 +442,27 @@ namespace LiveSplit.UI.Components
         }
 
         private int GetPBCounter(int splitindex)
+        {
+            string name = State.Run[splitindex].Name;
+            string total = "";
+            for (int i = 0; i < name.Length; i++)
+            {
+                if (name[i] == '|')
+                    break;
+                total += name[i];
+            }
+            if (total.Length == 0)
+                return 0;
+            try
+            {
+                return Convert.ToInt32(total);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+        public int GetPBCounterPublic(int splitindex)
         {
             string name = State.Run[splitindex].Name;
             string total = "";

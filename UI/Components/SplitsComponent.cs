@@ -91,6 +91,12 @@ namespace LiveSplit.UI.Components
 
             var totalSplits = Settings.ShowBlankSplits ? Math.Max(Settings.VisualSplitCount, visualSplitCount) : visualSplitCount;
 
+            bool addedProgressComponent = false;
+            if (Settings.ShowProgress && Settings.ShowProgressTop == 0)
+            {
+                Components.Add(new ProgressComponent(Settings, SplitComponents));
+                addedProgressComponent = true;
+            }
             if (Settings.ShowColumnLabels && CurrentState.Layout?.Mode == LayoutMode.Vertical)
             {
                 Components.Add(new LabelsComponent(Settings, ColumnsList));
@@ -106,6 +112,12 @@ namespace LiveSplit.UI.Components
                         Components.Add(new SeparatorComponent());
                     else if (Settings.ShowThinSeparators)
                         Components.Add(new ThinSeparatorComponent());
+
+                    if (Settings.ShowProgress && Settings.ShowProgressTop == 1 && Settings.AlwaysShowLastSplit && !addedProgressComponent)
+                    {
+                        Components.Add(new ProgressComponent(Settings, SplitComponents));
+                        addedProgressComponent = true;
+                    }
                 }
 
                 var splitComponent = new SplitComponent(Settings, ColumnsList, CurrentState);
@@ -115,6 +127,13 @@ namespace LiveSplit.UI.Components
 
                 if (Settings.ShowThinSeparators && i < totalSplits - 2)
                     Components.Add(new ThinSeparatorComponent());
+            }
+
+            // Si no se añadió aún y toca al final
+            if (Settings.ShowProgress && !addedProgressComponent)
+            {
+                Components.Add(new ProgressComponent(Settings, SplitComponents));
+                addedProgressComponent = true;
             }
         }
 
