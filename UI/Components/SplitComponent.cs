@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using LiveSplit.Model.Input;
+using System.Reflection;
 
 namespace LiveSplit.UI.Components
 {
@@ -375,53 +376,32 @@ namespace LiveSplit.UI.Components
                 if (splitIndex < state.CurrentSplitIndex)
                 {
                     if (!Settings.OverrideTextColor)
-                    {
                         NameLabel.ForeColor = state.LayoutSettings.TextColor;
-                    }
                     else if (counter == 0)
-                    {
                         NameLabel.ForeColor = Settings.BeforeNamesColor;
-                    }
                     else if (counter < pbCounter)
-                    {
                         NameLabel.ForeColor = Settings.BeforeNamesColorLowCounter;
-                    }
                     else if (counter == pbCounter)
-                    {
                         NameLabel.ForeColor = Settings.BeforeNamesColorSameCounter;
-                    }
                     else // counter > pbCounter
-                    {
                         NameLabel.ForeColor = Settings.BeforeNamesColorHighCounter;
-                    }
                 }
                 else if (Split == state.CurrentSplit)
                 {
                     if (!Settings.OverrideTextColor)
-                    {
                         NameLabel.ForeColor = state.LayoutSettings.TextColor;
-                    }
                     else if (counter == 0)
-                    {
                         NameLabel.ForeColor = Settings.CurrentNamesColor;
-                    }
                     else if (counter < pbCounter)
-                    {
                         NameLabel.ForeColor = Settings.CurrentNamesColorLowCounter;
-                    }
                     else if (counter == pbCounter)
-                    {
                         NameLabel.ForeColor = Settings.CurrentNamesColorSameCounter;
-                    }
                     else // counter > pbCounter
-                    {
                         NameLabel.ForeColor = Settings.CurrentNamesColorHighCounter;
-                    }
                 }
                 else
-                {
                     NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
-                }
+
                 foreach (var label in LabelsList)
                 {
                     var column = ColumnsList.ElementAt(LabelsList.IndexOf(label));
@@ -542,6 +522,24 @@ namespace LiveSplit.UI.Components
                     }
                 }
 
+
+                if (type == ColumnType.Counter || type == ColumnType.PBCounter)
+                {
+                    int counter = CounterList[splitIndex];
+                    int pbCounter = GetPBCounter(splitIndex);
+                    if (!Settings.OverrideTextColor)
+                        label.ForeColor = state.LayoutSettings.TextColor;
+                    else if (counter == 0)
+                        label.ForeColor = Settings.BeforeNamesColor;
+                    else if (counter < pbCounter)
+                        label.ForeColor = Settings.BeforeNamesColorLowCounter;
+                    else if (counter == pbCounter)
+                        label.ForeColor = Settings.BeforeNamesColorSameCounter;
+                    else // counter > pbCounter
+                        label.ForeColor = Settings.BeforeNamesColorHighCounter;
+
+                }
+
                 if (type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta)
                 {
                     var deltaTime = Split.SplitTime[timingMethod] - Split.Comparisons[comparison][timingMethod];
@@ -620,6 +618,24 @@ namespace LiveSplit.UI.Components
                         label.Text = TimeFormatter.Format(Split.Comparisons[comparison][timingMethod] - previousTime);
                     }
                 }
+                if (type == ColumnType.Counter || type == ColumnType.PBCounter)
+                    if (Split == state.CurrentSplit)
+                    {
+                        int counter = CounterList[splitIndex];
+                        int pbCounter = GetPBCounter(splitIndex);
+                        if (!Settings.OverrideTextColor)
+                            label.ForeColor = state.LayoutSettings.TextColor;
+                        else if (counter == 0)
+                            label.ForeColor = Settings.CurrentNamesColor;
+                        else if (counter < pbCounter)
+                            label.ForeColor = Settings.CurrentNamesColorLowCounter;
+                        else if (counter == pbCounter)
+                            label.ForeColor = Settings.CurrentNamesColorSameCounter;
+                        else // counter > pbCounter
+                            label.ForeColor = Settings.CurrentNamesColorHighCounter;
+                    }
+                    else
+                        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
 
                 //Live Delta
                 var splitDelta = type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta;

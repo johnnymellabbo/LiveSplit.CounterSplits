@@ -208,59 +208,35 @@ namespace LiveSplit.UI.Components
             if (i < state.CurrentSplitIndex)
             {
                 if (!Settings.OverrideTextColor)
-                {
                     return state.LayoutSettings.TextColor;
-                }
                 else if (counter == 0)
-                {
                     return Settings.BeforeNamesColor;
-                }
                 else if (counter < pbCounter)
-                {
                     return Settings.BeforeNamesColorLowCounter;
-                }
                 else if (counter == pbCounter)
-                {
                     return Settings.BeforeNamesColorSameCounter;
-                }
                 else // counter > pbCounter
-                {
                     return Settings.BeforeNamesColorHighCounter;
-                }
             }
             else if (i == state.CurrentSplitIndex)
             {
                 if (!Settings.OverrideTextColor)
-                {
                     return state.LayoutSettings.TextColor;
-                }
                 else if (counter == 0)
-                {
                     return Settings.CurrentNamesColor;
-                }
                 else if (counter < pbCounter)
-                {
                     return Settings.CurrentNamesColorLowCounter;
-                }
                 else if (counter == pbCounter)
-                {
                     return Settings.CurrentNamesColorSameCounter;
-                }
                 else // counter > pbCounter
-                {
                     return Settings.CurrentNamesColorHighCounter;
-                }
             }
             else
             {
                 if (!Settings.OverrideTextColor)
-                {
                     return state.LayoutSettings.TextColor;
-                }
                 else
-                {
                     return Settings.AfterNamesColor;
-                }
             }
         }
 

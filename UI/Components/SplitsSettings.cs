@@ -80,6 +80,7 @@ namespace LiveSplit.UI.Components
         public Color CurrentTimesColor { get; set; }
         public Color AfterTimesColor { get; set; }
         public bool OverrideTimesColor { get; set; }
+        public bool ApplyColorToCounter { get; set; }
 
         public bool ShowProgress { get; set; }
         public int ShowProgressTop { get; set; }
@@ -154,6 +155,7 @@ namespace LiveSplit.UI.Components
             CurrentTimesColor = Color.FromArgb(255, 255, 255);
             AfterTimesColor = Color.FromArgb(255, 255, 255);
             OverrideTimesColor = false;
+            ApplyColorToCounter = false;
             CurrentSplitGradient = GradientType.Vertical;
             cmbSplitGradient.SelectedIndexChanged += cmbSplitGradient_SelectedIndexChanged;
             BackgroundColor = Color.Transparent;
@@ -202,6 +204,7 @@ namespace LiveSplit.UI.Components
             chkLastSplit.DataBindings.Add("Checked", this, "AlwaysShowLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideTextColor.DataBindings.Add("Checked", this, "OverrideTextColor", false, DataSourceUpdateMode.OnPropertyChanged);
             chkOverrideTimesColor.DataBindings.Add("Checked", this, "OverrideTimesColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            chkApplyColorToCounter.DataBindings.Add("Checked", this, "ApplyColorToCounter", false, DataSourceUpdateMode.OnPropertyChanged);
             chkShowBlankSplits.DataBindings.Add("Checked", this, "ShowBlankSplits", false, DataSourceUpdateMode.OnPropertyChanged);
             chkLockLastSplit.DataBindings.Add("Checked", this, "LockLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
             chkSeparatorLastSplit.DataBindings.Add("Checked", this, "SeparatorLastSplit", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -261,6 +264,7 @@ namespace LiveSplit.UI.Components
             = btnBeforeNamesColorLowCounter.Enabled = btnBeforeNamesColorSameCounter.Enabled
             = btnBeforeNamesColorHighCounter.Enabled = btnCurrentNamesColorLowCounter.Enabled
             = btnCurrentNamesColorSameCounter.Enabled = btnCurrentNamesColorHighCounter.Enabled
+            = chkApplyColorToCounter.Enabled
             = chkOverrideTextColor.Checked;
         }
 
@@ -576,7 +580,16 @@ namespace LiveSplit.UI.Components
                 ProgressText = "Progress:";
             }
 
-            XmlElement incrementElement = element["IncrementKey"];
+            if (version >= new Version(1, 5))
+            {
+                ApplyColorToCounter = SettingsHelper.ParseBool(element["ApplyColorToCounter"]);
+            }
+            else
+            {
+                ApplyColorToCounter = false;
+            }
+
+                XmlElement incrementElement = element["IncrementKey"];
             IncrementKey = string.IsNullOrEmpty(incrementElement.InnerText) ? null : new KeyOrButton(incrementElement.InnerText);
             XmlElement decrementElement = element["DecrementKey"];
             DecrementKey = string.IsNullOrEmpty(decrementElement.InnerText) ? null : new KeyOrButton(decrementElement.InnerText);
@@ -633,6 +646,7 @@ namespace LiveSplit.UI.Components
             SettingsHelper.CreateSetting(document, parent, "CurrentTimesColor", CurrentTimesColor) ^
             SettingsHelper.CreateSetting(document, parent, "AfterTimesColor", AfterTimesColor) ^
             SettingsHelper.CreateSetting(document, parent, "OverrideTimesColor", OverrideTimesColor) ^
+            SettingsHelper.CreateSetting(document, parent, "ApplyColorToCounter", ApplyColorToCounter) ^
             SettingsHelper.CreateSetting(document, parent, "ShowBlankSplits", ShowBlankSplits) ^
             SettingsHelper.CreateSetting(document, parent, "LockLastSplit", LockLastSplit) ^
             SettingsHelper.CreateSetting(document, parent, "IconSize", IconSize) ^
