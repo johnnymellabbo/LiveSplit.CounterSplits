@@ -527,7 +527,7 @@ namespace LiveSplit.UI.Components
                 {
                     int counter = CounterList[splitIndex];
                     int pbCounter = GetPBCounter(splitIndex);
-                    if (!Settings.OverrideTextColor)
+                    if (!Settings.OverrideTextColor || !Settings.ApplyColorToCounter)
                         label.ForeColor = state.LayoutSettings.TextColor;
                     else if (counter == 0)
                         label.ForeColor = Settings.BeforeNamesColor;
@@ -623,7 +623,7 @@ namespace LiveSplit.UI.Components
                     {
                         int counter = CounterList[splitIndex];
                         int pbCounter = GetPBCounter(splitIndex);
-                        if (!Settings.OverrideTextColor)
+                        if (!Settings.OverrideTextColor || !Settings.ApplyColorToCounter)
                             label.ForeColor = state.LayoutSettings.TextColor;
                         else if (counter == 0)
                             label.ForeColor = Settings.CurrentNamesColor;
@@ -635,7 +635,10 @@ namespace LiveSplit.UI.Components
                             label.ForeColor = Settings.CurrentNamesColorHighCounter;
                     }
                     else
-                        NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.AfterNamesColor : state.LayoutSettings.TextColor;
+                        if (!Settings.OverrideTextColor || !Settings.ApplyColorToCounter)
+                            label.ForeColor = state.LayoutSettings.TextColor;
+                        else
+                            label.ForeColor = Settings.AfterNamesColor;
 
                 //Live Delta
                 var splitDelta = type == ColumnType.DeltaorSplitTime || type == ColumnType.Delta;
